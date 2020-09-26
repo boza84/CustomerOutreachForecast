@@ -1,0 +1,45 @@
+﻿@model DAL.Models.CustomerForecastViewModel
+@{
+    ViewBag.Title = "Home";
+}
+
+<div class="text-center mt-5">
+    <h1>Customer Outreach Forecast</h1>
+    <p class="lead">This application determines how to best contact individuals based on the weather for Minneapolis, MN over the next 5 days.</p>
+    <p>@Html.ActionLink("Refresh", "Index", "Home", new { area = "" }, new { @class = "btn btn-primary btn-lg" })</p>
+</div>
+
+<div class="container mt-5">
+    @if (string.IsNullOrEmpty(ViewBag.Message))
+    {
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    @foreach (var dayForecast in Model.DailyForecasts)
+                    {
+                        <th scope="col">@dayForecast.Date.DayOfWeek, @dayForecast.Date.ToShortDateString()</th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < Model.DailyForecasts.FirstOrDefault().PeriodForcasts.Count; i++)
+                {
+                    <tr>
+                        @for (int j = 0; j < Model.DailyForecasts.Count; j++)
+                        {
+                            <td>
+                                <p>@Model.DailyForecasts[j].PeriodForcasts[i].PeriodStartTime.ToShortTimeString() - @Model.DailyForecasts[j].PeriodForcasts[i].PeriodEndTime.ToShortTimeString()</p>
+                                <p>@Model.DailyForecasts[j].PeriodForcasts[i].EngamentMethod</p>
+                            </td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+	{
+	     <h3 class="text-center">@ViewBag.Message</h3>
+	}
+
+</div>
